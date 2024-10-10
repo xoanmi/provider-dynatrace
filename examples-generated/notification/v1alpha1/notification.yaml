@@ -1,0 +1,42 @@
+apiVersion: notification.crossplane.io/v1alpha1
+kind: Notification
+metadata:
+  annotations:
+    meta.upbound.io/example-id: notification/v1alpha1/notification
+  labels:
+    testing.upbound.io/example-name: '#name#'
+  name: '#name#'
+spec:
+  forProvider:
+    active: false
+    bcc:
+    - she@home.gov
+    - me@home.gov
+    - you@home.gov
+    body: '{ProblemDetailsHTML}'
+    cc:
+    - she@home.org
+    - me@home.org
+    - you@home.org
+    name: '#name#'
+    notifyClosedProblems: true
+    profile: ${dynatrace_alerting.Default.id}
+    subject: EMAIL-SUBJECT
+    to:
+    - she@home.com
+    - me@home.com
+    - you@home.com
+
+---
+
+apiVersion: alerting.crossplane.io/v1alpha1
+kind: Alerting
+metadata:
+  annotations:
+    meta.upbound.io/example-id: notification/v1alpha1/notification
+  labels:
+    testing.upbound.io/example-name: Default
+  name: default
+spec:
+  forProvider:
+    name: '#name#'

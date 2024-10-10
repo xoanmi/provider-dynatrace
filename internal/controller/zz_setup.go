@@ -9,15 +9,21 @@ import (
 
 	"github.com/crossplane/upjet/pkg/controller"
 
-	resource "github.com/upbound/upjet-provider-template/internal/controller/null/resource"
-	providerconfig "github.com/upbound/upjet-provider-template/internal/controller/providerconfig"
+	alerting "github.com/xoanmi/provider-dynatrace/internal/controller/alerting/alerting"
+	dashboard "github.com/xoanmi/provider-dynatrace/internal/controller/dashboard/dashboard"
+	events "github.com/xoanmi/provider-dynatrace/internal/controller/event/events"
+	notification "github.com/xoanmi/provider-dynatrace/internal/controller/notification/notification"
+	providerconfig "github.com/xoanmi/provider-dynatrace/internal/controller/providerconfig"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
-		resource.Setup,
+		alerting.Setup,
+		dashboard.Setup,
+		events.Setup,
+		notification.Setup,
 		providerconfig.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {

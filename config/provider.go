@@ -10,12 +10,15 @@ import (
 
 	ujconfig "github.com/crossplane/upjet/pkg/config"
 
-	"github.com/upbound/upjet-provider-template/config/null"
+	"github.com/xoanmi/provider-dynatrace/config/alerting"
+	"github.com/xoanmi/provider-dynatrace/config/dashboard"
+	"github.com/xoanmi/provider-dynatrace/config/event"
+	"github.com/xoanmi/provider-dynatrace/config/notification"
 )
 
 const (
-	resourcePrefix = "template"
-	modulePath     = "github.com/upbound/upjet-provider-template"
+	resourcePrefix = "dynatrace"
+	modulePath     = "github.com/xoanmi/provider-dynatrace"
 )
 
 //go:embed schema.json
@@ -27,7 +30,7 @@ var providerMetadata string
 // GetProvider returns provider configuration
 func GetProvider() *ujconfig.Provider {
 	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
-		ujconfig.WithRootGroup("template.upbound.io"),
+		ujconfig.WithRootGroup("crossplane.io"),
 		ujconfig.WithIncludeList(ExternalNameConfigured()),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithDefaultResourceOptions(
@@ -36,7 +39,10 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
-		null.Configure,
+		alerting.Configure,
+		event.Configure,
+		notification.Configure,
+		dashboard.Configure,
 	} {
 		configure(pc)
 	}
